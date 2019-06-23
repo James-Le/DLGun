@@ -30,9 +30,9 @@ class SiameseBiLSTM:
         
         cut = int(len(X1) * self.validation_split_ratio)
 
-        train_data_x1, val_data_x1 = np.expand_dims(X1[:cut], axis=-1), np.expand_dims(X1[cut:], axis=-1)
-        train_data_x2, val_data_x2 = np.expand_dims(X2[:cut], axis=-1), np.expand_dims(X2[cut:], axis=-1)
-        train_labels, val_labels = np.expand_dims(Y[:cut], axis=-1), np.expand_dims(Y[cut:], axis=-1)
+        train_data_x1, val_data_x1 = np.expand_dims(X1[cut:], axis=-1), np.expand_dims(X1[:cut], axis=-1)
+        train_data_x2, val_data_x2 = np.expand_dims(X2[cut:], axis=-1), np.expand_dims(X2[:cut], axis=-1)
+        train_labels, val_labels = np.expand_dims(Y[cut:], axis=-1), np.expand_dims(Y[:cut], axis=-1)
 
         if train_data_x1 is None:
             print("++++ !! Failure: Unable to train model ++++")
@@ -62,7 +62,7 @@ class SiameseBiLSTM:
         model = Model(inputs=[sequence_1_input, sequence_2_input], outputs=preds)
         model.compile(loss='binary_crossentropy', optimizer='nadam', metrics=['acc'])
 
-        early_stopping = EarlyStopping(monitor='val_loss', patience=3)
+        early_stopping = EarlyStopping(monitor='val_loss', patience=20)
 
         STAMP = 'lstm_%d_%d_%.2f_%.2f' % (self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)
 
@@ -88,9 +88,9 @@ class SiameseBiLSTM:
 
         cut = int(len(X1) * self.validation_split_ratio)
 
-        train_data_x1, val_data_x1 = np.expand_dims(X1[:cut], axis=-1), np.expand_dims(X1[cut:], axis=-1)
-        train_data_x2, val_data_x2 = np.expand_dims(X2[:cut], axis=-1), np.expand_dims(X2[cut:], axis=-1)
-        train_labels, val_labels = np.expand_dims(Y[:cut], axis=-1), np.expand_dims(Y[cut:], axis=-1)
+        train_data_x1, val_data_x1 = np.expand_dims(X1[cut:], axis=-1), np.expand_dims(X1[:cut], axis=-1)
+        train_data_x2, val_data_x2 = np.expand_dims(X2[cut:], axis=-1), np.expand_dims(X2[:cut], axis=-1)
+        train_labels, val_labels = np.expand_dims(Y[cut:], axis=-1), np.expand_dims(Y[:cut], axis=-1)
 
         model = load_model(saved_model_path)
         model_file_name = saved_model_path.split('/')[-1]
