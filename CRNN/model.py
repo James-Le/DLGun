@@ -40,13 +40,10 @@ class CRNN:
         
         x = conv1(input_)
         x = conv2(x)
-#         x = Flatten()(x)
-#         x = Reshape((, 12, ))(x)
         x = GRU(units=128, return_sequences=True)(x)
         x = GRU(units=128, return_sequences=True)(x)
         x = GRU(units=128, return_sequences=False)(x)
         x = Dense(128)(x)
-        x = Dropout(self.rate_drop_dense)(x)
         x = Dense(128)(x)
         preds = Dense(self.number_dense_units)(x)
         
